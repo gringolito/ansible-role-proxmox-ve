@@ -40,10 +40,10 @@ iface {{ bridge.name }} inet static
 {% else %}
 iface {{ bridge.name }} inet manual
 {% endif %}
-{% if bridge.interfaces is list %}
-  bridge_ports {{ " ".joing(bridge.interfaces) }}
-{% else %}
+{% if bridge.interfaces is string %}
   bridge_ports {{ bridge.interfaces }}
+{% else %}
+  bridge_ports {{ " ".joing(bridge.interfaces) }}
 {% endif %}
   bridge_stp off
   bridge_fd 0
