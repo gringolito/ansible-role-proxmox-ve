@@ -22,3 +22,21 @@
   when: pve_network_interface_alias is defined
   become: true
   notify: Reboot host
+
+- name: Setup SDN support on Proxmox
+  become: true
+  block:
+    - name: Install SDN support packages
+      ansible.builtin.apt:
+        package:
+          - libpve-network-perl
+          - dnsmasq
+          - frr-pythontools
+        state: present
+        update_cache: true
+
+    - name: Disable the default dnsmasq instance
+      ansible.builtin.systemd_service:
+        name: dnsmasq
+        state: stopped
+        enabled: false
